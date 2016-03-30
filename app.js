@@ -17,6 +17,8 @@ require('./passport')(passport);
 
 console.log(routes.index);
 
+var port = process.env.PORT || '3000';
+
 // connect to DB
 mongoose.connect('mongodb://admin:pass@ds011389.mlab.com:11389/mongotutdb', ['auth-app'], function(err, res) {
     if ( err ) {
@@ -98,4 +100,5 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter',
 ));
 
 
-module.exports = app;
+app.listen(port);
+console.log('Up and running on ' + port);
