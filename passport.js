@@ -3,7 +3,7 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 // Estrategia de autenticación con Twitter
 var TwitterStrategy = require('passport-twitter').Strategy;
-var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+var GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 // Api keys are in here
 var config = require('./config');
@@ -56,8 +56,8 @@ module.exports = function(passport) {
 	}));
 
 	passport.use(new GoogleStrategy({
-		consumerKey: config.google.client_id,
-		consumerSecret: config.google.secret,
+		clientID: config.google.client_id,
+		clientSecret: config.google.secret,
 		callbackURL: '/auth/google/callback'
 	}, function(token, tokenSecret, profile, done) {
 		User.findOrCreate({ googleId: profile.id }, function(err, user) {

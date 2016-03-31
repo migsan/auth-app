@@ -94,15 +94,13 @@ app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter',
     {
         successRedirect: '/',
-        failureRedirect: '/login',
-        successFlash: 'Welcome, successfuly logged in with Twitter!'
+        failureRedirect: '/login'
     }
 ));
 
-app.get('/auth/google', function() {
-    console.log('requested google auth');
-    passport.authenticate('google');
-});
+app.get('/auth/google', passport.authenticate('google', { scope: [
+       'https://www.googleapis.com/auth/plus.login'] 
+}));
 
 app.get('auth/google/callback', passport.authenticate('google',
     {

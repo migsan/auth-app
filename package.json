@@ -16,6 +16,7 @@
     "morgan": "~1.6.1",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",
+    "passport-google-oauth2": "^0.1.6",
     "passport-twitter": "^1.0.4",
     "serve-favicon": "~2.3.0",
     "twitter": "^1.2.5"
