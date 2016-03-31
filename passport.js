@@ -61,7 +61,7 @@ module.exports = function(passport) {
 		callbackURL: '/auth/google/callback'
 	}, function(token, tokenSecret, profile, done) {
 		User.findOne({ googleId: profile.id }, function(err, user) {
-			console.log(user);
+			console.log('--------- the user is', user);
 
 			if ( err ) {
 				throw(err);
