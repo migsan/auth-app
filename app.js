@@ -102,15 +102,12 @@ app.get('/auth/google', passport.authenticate('google',
     { scope: ['https://www.googleapis.com/auth/plus.login'] }
 ));
 
-app.get('/auth/google/callback', function() {
-    console.log('auth with google successfull, received callback');
-    passport.authenticate('google',
-        {
-            successRedirect: '/',
-            failureRedirect: '/login'
-        }
-    );
-});
+app.get('/auth/google/callback', passport.authenticate('google',
+    {
+        successRedirect: '/',
+        failureRedirect: '/login'
+    }
+));
 
 app.listen(port);
 console.log('Up and running on ' + port);
