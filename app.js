@@ -99,7 +99,10 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter',
     }
 ));
 
-app.get('/auth/google', passport.authenticate('google'));
+app.get('/auth/google', function() {
+    console.log('requested google auth');
+    passport.authenticate('google');
+});
 
 app.get('auth/google/callback', passport.authenticate('google',
     {
