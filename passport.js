@@ -35,7 +35,7 @@ module.exports = function(passport) {
 	}, function(accessToken, refreshToken, profile, done) {
 		// Busca en la base de datos si el usuario ya se autenticó en otro
 		// momento y ya está almacenado en ella
-		User.findOne({provider_id: profile.id}, function(err, user) {
+		User.findOne({ provider_id: profile.id }, function(err, user) {
 			if(err) throw(err);
 			// Si existe en la Base de Datos, lo devuelve
 			if(!err && user!= null) return done(null, user);
@@ -60,7 +60,7 @@ module.exports = function(passport) {
 		clientSecret: config.google.secret,
 		callbackURL: '/auth/google/callback'
 	}, function(token, tokenSecret, profile, done) {
-		User.findOrCreate({ googleId: profile.id }, function(err, user) {
+		User.findOne({ googleId: profile.id }, function(err, user) {
 			if ( err ) {
 				throw(err);
 			}
