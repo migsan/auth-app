@@ -61,27 +61,27 @@ module.exports = function(passport) {
 		callbackURL: '/auth/google/callback'
 	}, function(token, tokenSecret, profile, done) {
 		User.findOne({ googleId: profile.id }, function(err, user) {
+			console.log(user);
+
 			if ( err ) {
 				throw(err);
 			}
 			if ( !err && user!=null ) {
-				return done(null, user);
-			}
-
-			var user = new User({
-				provider_id: profile.id,
-				provider: profile.provider,
-				name: profile.displayName,
-				photo: profile.photos[0].value
-			});
-
-			user.save(function(err) {
-				if ( err ) {
-					throw(err);
+				if ( profile.id != user.provider_id ) {
+					var user = new User({
+						provider_id: profile.id,
+						provider: profile.provider,
+						name: profile.displayName,
+						photo: profile.photos[0].value
+					});
+					user.save(function(err) {
+						if ( err ) {
+							throw(err);
+						}
+						return done(null, user);
+					});
 				}
-
-				done(null, user);
-			});
+			}
 		});
 	}));
 
