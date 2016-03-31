@@ -14,6 +14,8 @@ var config = require('./config');
 // logrando que sea más manejable.
 module.exports = function(passport) {
 
+	console.log(config);
+
 	// Serializa al usuario para almacenarlo en la sesión
 	passport.serializeUser(function(user, done) {
 		done(null, user);
@@ -41,9 +43,9 @@ module.exports = function(passport) {
 			// Si no existe crea un nuevo objecto usuario
 			var user = new User({
 				provider_id	: profile.id,
-				provider		 : profile.provider,
-				name				 : profile.displayName,
-				photo				: profile.photos[0].value
+				provider: profile.provider,
+				name: profile.displayName,
+				photo: profile.photos[0].value
 			});
 			//...y lo almacena en la base de datos
 			user.save(function(err) {
@@ -53,8 +55,8 @@ module.exports = function(passport) {
 		});
 	}));
 
-	passport.use(new GoogleStrategy() {
-		consumerKey: config.google.provider_id,
+	passport.use(new GoogleStrategy({
+		consumerKey: config.google.client_id,
 		consumerSecret: config.google.secret,
 		callbackURL: '/auth/google/callback'
 	}, function(token, tokenSecret, profile, done) {
@@ -81,7 +83,6 @@ module.exports = function(passport) {
 				done(null, user);
 			});
 		});
-	}
-	);
+	}));
 
 };
