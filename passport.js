@@ -60,13 +60,13 @@ module.exports = function(passport) {
 		clientSecret: config.google.secret,
 		callbackURL: '/auth/google/callback'
 	}, function(token, tokenSecret, profile, done) {
-		User.findOne({ googleId: profile.id }, function(err, user) {
+		User.findOne({ provider_id: profile.id }, function(err, user) {
 			console.log(user);
 
 			if ( err ) {
 				throw(err);
 			}
-			if ( !err && user!=null ) {
+			if ( !err && user != null ) {
 				return done(null, user);
 			}
 
