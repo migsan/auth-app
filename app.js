@@ -15,8 +15,6 @@ var routes = require('./routes');
 require('./models/user');
 require('./passport')(passport);
 
-console.log(routes.index);
-
 var port = process.env.PORT || '3000';
 
 // connect to DB
@@ -29,13 +27,11 @@ mongoose.connect('mongodb://admin:pass@ds011389.mlab.com:11389/mongotutdb', ['au
 
 var app = express();
 
-
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true
-}))
-
+}));
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

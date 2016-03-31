@@ -1,16 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
-  if(user)
-    ul
-      li
-        img(src="#{user.photo}")
-      li Bienvenido #{user.name}
-      li
-        a(href='logout') Salir
-  else
-    ul
-      li
-        a(href='auth/twitter') Login con Twitter
+    h1= title
+    p Welcome to #{title}
+    if(user)
+        ul
+            li
+                img(src="#{user.photo}")
+            li Welcome #{user.name}
+            li
+                a(href='logout') Log out
+    else
+        ul
+            li
+                a(href='auth/twitter') Login with Twitter
+            li
+                a(href='auth/google') Login with Google
