@@ -3,9 +3,9 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 // Estrategia de autenticación con Twitter
 var TwitterStrategy = require('passport-twitter').Strategy;
-// Fichero de configuración donde se encuentran las API keys
-// Este archivo no debe subirse a GitHub ya que contiene datos
-// que pueden comprometer la seguridad de la aplicación.
+var GoogleStrategy = require('passport-google-oauth').OAuthStrategy;
+
+// Api keys are in here
 var config = require('./config');
 
 // Exportamos como módulo las funciones de passport, de manera que
@@ -27,9 +27,9 @@ module.exports = function(passport) {
 
 	// Configuración del autenticado con Twitter
 	passport.use(new TwitterStrategy({
-		consumerKey		 : config.twitter.key,
-		consumerSecret	: config.twitter.secret,
-		callbackURL		 : '/auth/twitter/callback'
+		consumerKey: config.twitter.key,
+		consumerSecret: config.twitter.secret,
+		callbackURL: '/auth/twitter/callback'
 	}, function(accessToken, refreshToken, profile, done) {
 		// Busca en la base de datos si el usuario ya se autenticó en otro
 		// momento y ya está almacenado en ella
@@ -52,4 +52,36 @@ module.exports = function(passport) {
 			});
 		});
 	}));
+
+	passport.use(new GoogleStrategy() {
+		consumerKey: config.google.provider_id,
+		consumerSecret: config.google.secret,
+		callbackURL: '/auth/google/callback'
+	}, function(token, tokenSecret, profile, done) {
+		User.findOrCreate({ googleId: profile.id }, function(err, user) {
+			if ( err ) {
+				throw(err);
+			}
+			if ( !err && user!=null ) {
+				return done(null, user);
+			}
+
+			var user = new User({
+				provider_id: profile.id,
+				provider: profile.provider,
+				name: profile.displayName,
+				photo: profile.photos[0].value
+			});
+
+			user.save(function(err) {
+				if ( err ) {
+					throw(err);
+				}
+
+				done(null, user);
+			});
+		});
+	}
+	);
+
 };

@@ -61,40 +61,53 @@ app.use(passport.session());
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
+    app.use(function(err, req, res, next) {
+        res.status(err.status || 500);
+        res.render('error', {
+            message: err.message,
+            error: err
+        });
     });
-  });
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+    res.status(err.status || 500);
+    res.render('error', {
+        message: err.message,
+        error: {}
+    });
 });
 
 // Get to the root
 app.get('/', routes.index);
 
 app.get('/logout', function(req, res) {
-  req.logout();
-  res.redirect('/');
+    req.logout();
+    res.redirect('/');
 });
 
 // Get to twitter auth
 app.get('/auth/twitter', passport.authenticate('twitter'));
 // Redirect when success on twitter login
 app.get('/auth/twitter/callback', passport.authenticate('twitter',
-  { successRedirect: '/', failureRedirect: '/login' }
+    {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        successFlash: 'Welcome, successfuly logged in with Twitter!'
+    }
 ));
 
+app.get('/auth/google', passport.authenticate('google'));
+
+app.get('auth/google/callback', passport.authenticate('google',
+    {
+        successRedirect: '/',
+        failureRedirect: '/login',
+        successFlash: 'Welcome, successfuly logged in with Google!'
+    }
+));
 
 app.listen(port);
 console.log('Up and running on ' + port);
