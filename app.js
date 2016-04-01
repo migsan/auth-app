@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var dbHandler = require('./db_handler');
 
 var session = require('express-session');
 
@@ -108,6 +109,24 @@ app.get('/auth/google/callback', passport.authenticate('google',
         failureRedirect: '/login'
     }
 ));
+
+// submit button
+app.post('/submit', function(req, res) {
+    console.log('------- submit post request');
+    console.log(req.body);
+
+    console.log(dbHandler);
+
+    dbHandler.postData(req.body, function(err, doc) {
+        if ( err ) {
+            throw err;
+        }
+        console.log(doc);
+        res.redirect('/');
+    });
+
+
+});
 
 app.listen(port);
 console.log('Up and running on ' + port);

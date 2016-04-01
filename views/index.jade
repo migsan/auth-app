@@ -10,6 +10,19 @@ block content
             li Welcome #{user.name}
             li
                 a(href='logout') Log out
+        div(class='input-area')
+            form(action='/submit', method='post')
+                label Name
+                input(type='text', name='name', id='name')
+            
+                label No columns
+                input(type='number', name='columns', id='columns')
+                
+                label No boxes
+                input(type= 'number', name='boxes', id='boxes')
+                
+                input(type='submit', value='Submit')
+        
     else
         ul
             li
